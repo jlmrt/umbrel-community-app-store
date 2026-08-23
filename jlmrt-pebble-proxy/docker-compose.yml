@@ -10,7 +10,7 @@ services:
       - admin_internal
 
   admin:
-    image: ghcr.io/jlmrt/pebble-proxy:test
+    image: ghcr.io/jlmrt/pebble-proxy:test@sha256:96079c1a9f9353b5ca03778ed73437e847c6703847caa8eef54c90ef1e73102f
     user: "1000:1000"
     restart: on-failure
     init: true
@@ -41,7 +41,7 @@ services:
       start_period: 10s
 
   api:
-    image: ghcr.io/jlmrt/pebble-proxy:test
+    image: ghcr.io/jlmrt/pebble-proxy:test@sha256:96079c1a9f9353b5ca03778ed73437e847c6703847caa8eef54c90ef1e73102f
     user: "1000:1000"
     restart: on-failure
     init: true

@@ -26,6 +26,9 @@ for (const appId of appDirectories) {
   assert.match(manifest, new RegExp(`^id:\\s*${appId}$`, 'm'), `${appId} manifest ID must match its directory`);
   assert.doesNotMatch(compose, /^\s*build:/m, `${appId} must pull a published image`);
   assert.match(compose, /^\s*image:\s*\S+/m, `${appId} must declare a container image`);
+  for (const image of compose.matchAll(/^\s*image:\s*(\S+)/gm)) {
+    assert.match(image[1], /@sha256:[a-f0-9]{64}$/, `${appId} images must be pinned to an immutable digest`);
+  }
 }
 
 const provenancePattern = /Wrist AI|interoperability test client|as requested|per your request|you asked|the user (?:asked|requested|specified|wanted)|generated from (?:the |a )?(?:user.?s )?prompt/i;
