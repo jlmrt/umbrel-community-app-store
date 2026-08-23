@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -30,6 +31,19 @@ for (const appId of appDirectories) {
   assert.ok(Number.isInteger(port) && port >= 1000 && port <= 9999, `${appId} must use a four-digit app port`);
   assert.ok(!assignedPorts.has(port), `${appId} duplicates port ${port} used by ${assignedPorts.get(port)}`);
   assignedPorts.set(port, appId);
+  if (compose.includes('${APP_DATA_DIR}/data:')) {
+    assert.ok(fs.existsSync(path.join(appRoot, 'data/.gitkeep')), `${appId} must commit its data bind-mount source`);
+  }
+  const preStart = path.join(appRoot, 'hooks/pre-start');
+  if (fs.existsSync(preStart)) {
+    assert.ok(fs.statSync(preStart).mode & 0o111, `${appId} pre-start hook must be executable`);
+    const hookSyntax = spawnSync('bash', ['-n', preStart], { encoding: 'utf8' });
+    assert.equal(hookSyntax.status, 0, hookSyntax.stderr || `${appId} pre-start hook syntax check failed`);
+  }
+  if (appId === 'jlmrt-pebble-proxy') {
+    assert.match(manifest, /^version:\s*["']0\.1\.0-test\.2["']$/m);
+    assert.ok(fs.existsSync(preStart), `${appId} requires its data ownership migration hook`);
+  }
   assert.doesNotMatch(compose, /^\s*build:/m, `${appId} must pull a published image`);
   assert.match(compose, /^\s*image:\s*\S+/m, `${appId} must declare a container image`);
   for (const image of compose.matchAll(/^\s*image:\s*(\S+)/gm)) {
