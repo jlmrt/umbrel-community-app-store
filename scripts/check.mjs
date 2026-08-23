@@ -41,7 +41,12 @@ for (const appId of appDirectories) {
     assert.equal(hookSyntax.status, 0, hookSyntax.stderr || `${appId} pre-start hook syntax check failed`);
   }
   if (appId === 'jlmrt-pebble-proxy') {
-    assert.match(manifest, /^version:\s*["']0\.1\.0-test\.2["']$/m);
+    assert.match(manifest, /^version:\s*["']0\.1\.0-test\.4["']$/m);
+    assert.match(manifest, /^icon:\s*https:\/\/raw\.githubusercontent\.com\/jlmrt\/PebbleProxy\/main\/icon\.svg$/m);
+    assert.match(manifest, /^repo:\s*https:\/\/github\.com\/jlmrt\/PebbleProxy$/m);
+    assert.match(compose, /ghcr\.io\/jlmrt\/pebble-proxy:sha-eed07ee@sha256:330f86f9e093283b718e9aa37e0f806d3d9923584efa2b1bbcf6511e0fef26c0/);
+    assert.match(compose, /PUBLIC_BASE_URL:\s*\$\{PEBBLE_PROXY_PUBLIC_BASE_URL:-\}/);
+    assert.match(compose, /ALLOWED_PUBLIC_HOSTS:\s*\$\{PEBBLE_PROXY_ALLOWED_HOSTS:-\}/);
     assert.ok(fs.existsSync(preStart), `${appId} requires its data ownership migration hook`);
   }
   assert.doesNotMatch(compose, /^\s*build:/m, `${appId} must pull a published image`);

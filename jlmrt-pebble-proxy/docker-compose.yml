@@ -10,7 +10,7 @@ services:
       - admin_internal
 
   admin:
-    image: ghcr.io/jlmrt/pebble-proxy:test@sha256:96079c1a9f9353b5ca03778ed73437e847c6703847caa8eef54c90ef1e73102f
+    image: ghcr.io/jlmrt/pebble-proxy:sha-eed07ee@sha256:330f86f9e093283b718e9aa37e0f806d3d9923584efa2b1bbcf6511e0fef26c0
     user: "1000:1000"
     restart: on-failure
     init: true
@@ -30,6 +30,8 @@ services:
       ADMIN_PORT: 3000
       DATA_DIR: /data
       APP_SEED: ${APP_SEED}
+      PUBLIC_BASE_URL: ${PEBBLE_PROXY_PUBLIC_BASE_URL:-}
+      ALLOWED_PUBLIC_HOSTS: ${PEBBLE_PROXY_ALLOWED_HOSTS:-}
       NODE_ENV: production
     networks:
       - admin_internal
@@ -41,7 +43,7 @@ services:
       start_period: 10s
 
   api:
-    image: ghcr.io/jlmrt/pebble-proxy:test@sha256:96079c1a9f9353b5ca03778ed73437e847c6703847caa8eef54c90ef1e73102f
+    image: ghcr.io/jlmrt/pebble-proxy:sha-eed07ee@sha256:330f86f9e093283b718e9aa37e0f806d3d9923584efa2b1bbcf6511e0fef26c0
     user: "1000:1000"
     restart: on-failure
     init: true
@@ -61,6 +63,8 @@ services:
       PUBLIC_PORT: 8080
       DATA_DIR: /data
       APP_SEED: ${APP_SEED}
+      PUBLIC_BASE_URL: ${PEBBLE_PROXY_PUBLIC_BASE_URL:-}
+      ALLOWED_PUBLIC_HOSTS: ${PEBBLE_PROXY_ALLOWED_HOSTS:-}
       NODE_ENV: production
     expose:
       - "8080"

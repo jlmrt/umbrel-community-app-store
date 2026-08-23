@@ -2,24 +2,27 @@ manifestVersion: 1
 id: jlmrt-pebble-proxy
 category: automation
 name: Pebble Proxy
-version: "0.1.0-test.2"
+version: "0.1.0-test.4"
 tagline: A private voice and AI gateway for Pebble apps
+icon: https://raw.githubusercontent.com/jlmrt/PebbleProxy/main/icon.svg
 description: >-
   Experimental pre-release. Pebble Proxy gives compatible Pebble apps an authenticated
   gateway for voice uploads, private speech-to-text, OpenAI-compatible assistants, and
   device-scoped notes and reminders. Keep the admin interface private and do not use this
   build for production or irreplaceable data.
-developer: JLMRT
-website: https://github.com/jlmrt/umbrel-community-app-store
+developer: Pebble Proxy Community
+website: https://github.com/jlmrt/PebbleProxy
 dependencies: []
-repo: https://github.com/jlmrt/umbrel-community-app-store
-support: https://github.com/jlmrt/umbrel-community-app-store/issues
+repo: https://github.com/jlmrt/PebbleProxy
+support: https://github.com/jlmrt/PebbleProxy/issues
 port: 9432
 gallery: []
 path: ""
 defaultUsername: ""
 defaultPassword: ""
-submitter: JLMRT
-submission: https://github.com/jlmrt/umbrel-community-app-store
+submitter: Pebble Proxy Community
+submission: https://github.com/jlmrt/PebbleProxy
 releaseNotes: >-
-  Creates writable persistent-data directories before services start on Umbrel.
+  Adds guided Pebble Index and watch-app onboarding, accepts CoreApp's Auth Token
+  header, and adds optional token-protected speech synthesis through Umbrel's
+  official Kokoro app while keeping LocalAI/Whisper as the transcription service.
