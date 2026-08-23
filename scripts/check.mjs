@@ -15,6 +15,8 @@ const appDirectories = fs.readdirSync(root, { withFileTypes: true })
 
 assert.ok(appDirectories.length > 0, 'Store must contain at least one app');
 
+const assignedPorts = new Map();
+
 for (const appId of appDirectories) {
   const appRoot = path.join(root, appId);
   for (const required of ['umbrel-app.yml', 'docker-compose.yml', 'icon.svg']) {
@@ -24,6 +26,10 @@ for (const appId of appDirectories) {
   const manifest = fs.readFileSync(path.join(appRoot, 'umbrel-app.yml'), 'utf8');
   const compose = fs.readFileSync(path.join(appRoot, 'docker-compose.yml'), 'utf8');
   assert.match(manifest, new RegExp(`^id:\\s*${appId}$`, 'm'), `${appId} manifest ID must match its directory`);
+  const port = Number(manifest.match(/^port:\s*["']?(\d+)/m)?.[1]);
+  assert.ok(Number.isInteger(port) && port >= 1000 && port <= 9999, `${appId} must use a four-digit app port`);
+  assert.ok(!assignedPorts.has(port), `${appId} duplicates port ${port} used by ${assignedPorts.get(port)}`);
+  assignedPorts.set(port, appId);
   assert.doesNotMatch(compose, /^\s*build:/m, `${appId} must pull a published image`);
   assert.match(compose, /^\s*image:\s*\S+/m, `${appId} must declare a container image`);
   for (const image of compose.matchAll(/^\s*image:\s*(\S+)/gm)) {

@@ -14,7 +14,7 @@ website: https://github.com/jlmrt/umbrel-community-app-store
 dependencies: []
 repo: https://github.com/jlmrt/umbrel-community-app-store
 support: https://github.com/jlmrt/umbrel-community-app-store/issues
-port: 3000
+port: 9432
 gallery: []
 path: ""
 defaultUsername: ""
