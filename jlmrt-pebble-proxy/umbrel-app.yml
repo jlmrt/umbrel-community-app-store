@@ -1,0 +1,25 @@
+manifestVersion: 1
+id: jlmrt-pebble-proxy
+category: automation
+name: Pebble Proxy
+version: "0.1.0-test.1"
+tagline: A private voice and AI gateway for Pebble apps
+description: >-
+  Experimental pre-release. Pebble Proxy gives compatible Pebble apps an authenticated
+  gateway for voice uploads, private speech-to-text, OpenAI-compatible assistants, and
+  device-scoped notes and reminders. Keep the admin interface private and do not use this
+  build for production or irreplaceable data.
+developer: JLMRT
+website: https://github.com/jlmrt/umbrel-community-app-store
+dependencies: []
+repo: https://github.com/jlmrt/umbrel-community-app-store
+support: https://github.com/jlmrt/umbrel-community-app-store/issues
+port: 3000
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+submitter: JLMRT
+submission: https://github.com/jlmrt/umbrel-community-app-store
+releaseNotes: >-
+  Experimental package for private installation and end-to-end testing on Umbrel.
