@@ -2,7 +2,7 @@ manifestVersion: 1
 id: jlmrt-pebble-proxy
 category: automation
 name: Pebble Proxy
-version: "0.1.0-test.4"
+version: "0.1.0-test.7"
 tagline: A private voice and AI gateway for Pebble apps
 icon: https://raw.githubusercontent.com/jlmrt/PebbleProxy/main/icon.svg
 description: >-
@@ -23,6 +23,7 @@ defaultPassword: ""
 submitter: Pebble Proxy Community
 submission: https://github.com/jlmrt/PebbleProxy
 releaseNotes: >-
-  Adds guided Pebble Index and watch-app onboarding, accepts CoreApp's Auth Token
-  header, and adds optional token-protected speech synthesis through Umbrel's
-  official Kokoro app while keeping LocalAI/Whisper as the transcription service.
+  Adds opt-in local Needle transcript processing for creating notes, creating reminders,
+  or forwarding the original transcript to a configured private agent. CoreApp test events
+  are now accepted without being stored, Index trigger metadata is retained, and the setup
+  guide shows the custom header name and value fields.

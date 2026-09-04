@@ -41,12 +41,46 @@ for (const appId of appDirectories) {
     assert.equal(hookSyntax.status, 0, hookSyntax.stderr || `${appId} pre-start hook syntax check failed`);
   }
   if (appId === 'jlmrt-pebble-proxy') {
-    assert.match(manifest, /^version:\s*["']0\.1\.0-test\.4["']$/m);
+    assert.match(manifest, /^version:\s*["']0\.1\.0-test\.7["']$/m);
     assert.match(manifest, /^icon:\s*https:\/\/raw\.githubusercontent\.com\/jlmrt\/PebbleProxy\/main\/icon\.svg$/m);
     assert.match(manifest, /^repo:\s*https:\/\/github\.com\/jlmrt\/PebbleProxy$/m);
-    assert.match(compose, /ghcr\.io\/jlmrt\/pebble-proxy:sha-eed07ee@sha256:330f86f9e093283b718e9aa37e0f806d3d9923584efa2b1bbcf6511e0fef26c0/);
+    assert.match(compose, /ghcr\.io\/jlmrt\/pebble-proxy:sha-8c21381@sha256:15d6bd067caefcc5d86e1c8bf4c277adc17d785076bb343cf1330f54f6bae63f/);
+    assert.match(compose, /ghcr\.io\/jlmrt\/pebble-proxy-needle:sha-8c21381@sha256:668ec8bd51df2330fa5b80357f02ec70d05f4c1a40fec09a75f10d7d9b3193db/);
     assert.match(compose, /PUBLIC_BASE_URL:\s*\$\{PEBBLE_PROXY_PUBLIC_BASE_URL:-\}/);
     assert.match(compose, /ALLOWED_PUBLIC_HOSTS:\s*\$\{PEBBLE_PROXY_ALLOWED_HOSTS:-\}/);
+    assert.match(compose, /APP_HOST:\s*\$\{APP_ID:-pebble-proxy\}_admin_1/);
+    assert.match(compose, /UMBREL_APP_ID:\s*\$\{APP_ID:-pebble-proxy\}/);
+    assert.match(compose, /NEEDLE_ROUTER_URL:\s*http:\/\/needle:8090/);
+    assert.match(compose, /processing_internal:\s*\n\s*internal:\s*true/);
+    assert.match(compose, /NEEDLE_TELEMETRY:\s*["']0["']/);
+    assert.match(compose, /HF_HUB_OFFLINE:\s*["']1["']/);
+    const renderedCompose = compose.replace(
+      /\$\{([A-Z0-9_]+):-([^}]*)\}/g,
+      (_match, name, fallback) => ({ APP_ID: appId }[name] || fallback)
+    );
+    assert.match(renderedCompose, new RegExp(`APP_HOST:\\s*${appId}_admin_1`));
+    assert.match(renderedCompose, new RegExp(`UMBREL_APP_ID:\\s*${appId}`));
+
+    const exportsFile = path.join(appRoot, 'exports.sh');
+    assert.ok(fs.existsSync(exportsFile), `${appId} requires exports.sh`);
+    for (const exportId of [appId, 'another-store-pebble-proxy', '']) {
+      const expectedId = exportId || 'pebble-proxy';
+      const exported = spawnSync('bash', ['-c', 'set -u; source "$1"; printf "%s\\n%s\\n" "$APP_PEBBLE_PROXY_API_HOST" "$APP_PEBBLE_PROXY_API_URL"', 'bash', exportsFile], {
+        encoding: 'utf8',
+        env: { PATH: process.env.PATH || '', EXPORTS_APP_ID: exportId }
+      });
+      assert.equal(exported.status, 0, exported.stderr || `${appId} exports.sh failed`);
+      assert.deepEqual(exported.stdout.trim().split('\n'), [
+        `${expectedId}_api_1`,
+        `http://${expectedId}_api_1:8080`
+      ]);
+    }
+    const invalidExport = spawnSync('bash', ['-c', 'set -u; source "$1"; printf "%s\\n" "$APP_PEBBLE_PROXY_API_URL"', 'bash', exportsFile], {
+      encoding: 'utf8',
+      env: { PATH: process.env.PATH || '', EXPORTS_APP_ID: 'INVALID' }
+    });
+    assert.equal(invalidExport.status, 0, invalidExport.stderr || `${appId} exports.sh failed`);
+    assert.equal(invalidExport.stdout.trim(), 'http://pebble-proxy_api_1:8080');
     assert.ok(fs.existsSync(preStart), `${appId} requires its data ownership migration hook`);
   }
   assert.doesNotMatch(compose, /^\s*build:/m, `${appId} must pull a published image`);
