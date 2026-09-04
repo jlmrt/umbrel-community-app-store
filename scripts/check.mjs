@@ -41,11 +41,11 @@ for (const appId of appDirectories) {
     assert.equal(hookSyntax.status, 0, hookSyntax.stderr || `${appId} pre-start hook syntax check failed`);
   }
   if (appId === 'jlmrt-pebble-proxy') {
-    assert.match(manifest, /^version:\s*["']0\.1\.0-test\.9["']$/m);
+    assert.match(manifest, /^version:\s*["']0\.1\.0-test\.10["']$/m);
     assert.match(manifest, /^icon:\s*https:\/\/raw\.githubusercontent\.com\/jlmrt\/PebbleProxy\/main\/icon\.svg$/m);
     assert.match(manifest, /^repo:\s*https:\/\/github\.com\/jlmrt\/PebbleProxy$/m);
-    assert.match(compose, /ghcr\.io\/jlmrt\/pebble-proxy:sha-ff6bfc5@sha256:424a37f58f2ab310f807f80fb500048c58dc7c7c2bcc9ad2c3258372e8e952d3/);
-    assert.match(compose, /ghcr\.io\/jlmrt\/pebble-proxy-needle:sha-ff6bfc5@sha256:cf0c77af397374bcaf012598382d0f1ce292c6bb410723b72e6dd8af08dbb89e/);
+    assert.match(compose, /ghcr\.io\/jlmrt\/pebble-proxy:sha-40bbd44@sha256:a5acd4594d5100ab8672b5f42fd1b1f3b9688d16fe7f22bd16f1cf9c8cd50ccc/);
+    assert.match(compose, /ghcr\.io\/jlmrt\/pebble-proxy-needle:sha-40bbd44@sha256:dd2e4b72dcfad9446f415427b88912f6a67391cab5a257fae690ac8c7564d90a/);
     assert.match(compose, /PUBLIC_BASE_URL:\s*\$\{PEBBLE_PROXY_PUBLIC_BASE_URL:-\}/);
     assert.match(compose, /ALLOWED_PUBLIC_HOSTS:\s*\$\{PEBBLE_PROXY_ALLOWED_HOSTS:-\}/);
     assert.match(compose, /APP_HOST:\s*\$\{APP_ID:-pebble-proxy\}_admin_1/);
