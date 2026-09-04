@@ -10,7 +10,7 @@ services:
       - admin_internal
 
   admin:
-    image: ghcr.io/jlmrt/pebble-proxy:sha-8c21381@sha256:15d6bd067caefcc5d86e1c8bf4c277adc17d785076bb343cf1330f54f6bae63f
+    image: ghcr.io/jlmrt/pebble-proxy:sha-ac9a051@sha256:55ae7cfa5645e37376e20256691090ca1ee02ed1b79a87243aad9c5d0e9ef742
     user: "1000:1000"
     restart: on-failure
     init: true
@@ -45,7 +45,7 @@ services:
       start_period: 10s
 
   api:
-    image: ghcr.io/jlmrt/pebble-proxy:sha-8c21381@sha256:15d6bd067caefcc5d86e1c8bf4c277adc17d785076bb343cf1330f54f6bae63f
+    image: ghcr.io/jlmrt/pebble-proxy:sha-ac9a051@sha256:55ae7cfa5645e37376e20256691090ca1ee02ed1b79a87243aad9c5d0e9ef742
     user: "1000:1000"
     restart: on-failure
     init: true
@@ -83,7 +83,7 @@ services:
       start_period: 10s
 
   needle:
-    image: ghcr.io/jlmrt/pebble-proxy-needle:sha-8c21381@sha256:668ec8bd51df2330fa5b80357f02ec70d05f4c1a40fec09a75f10d7d9b3193db
+    image: ghcr.io/jlmrt/pebble-proxy-needle:sha-ac9a051@sha256:85dce188b3be9b0f454202115311c706c9e868191114ad120d451fccb8eabec4
     user: "1000:1000"
     restart: on-failure
     init: true
