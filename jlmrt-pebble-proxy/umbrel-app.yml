@@ -4,24 +4,24 @@ category: automation
 name: Pebble Proxy
 version: "0.1.0-test.15"
 tagline: A private voice and AI gateway for Pebble apps
-icon: https://raw.githubusercontent.com/jlmrt/PebbleProxy/main/icon.svg
+icon: https://raw.githubusercontent.com/jlmrt/umbrel-community-app-store/main/jlmrt-pebble-proxy/icon.svg
 description: >-
   Experimental pre-release. Pebble Proxy gives compatible Pebble apps an authenticated
   gateway for voice uploads, private speech-to-text, OpenAI-compatible assistants, and
   device-scoped notes and reminders. Keep the admin interface private and do not use this
   build for production or irreplaceable data.
 developer: Pebble Proxy Community
-website: https://github.com/jlmrt/PebbleProxy
+website: https://github.com/jlmrt/umbrel-community-app-store
 dependencies: []
-repo: https://github.com/jlmrt/PebbleProxy
-support: https://github.com/jlmrt/PebbleProxy/issues
+repo: https://github.com/jlmrt/umbrel-community-app-store
+support: https://github.com/jlmrt/umbrel-community-app-store/issues
 port: 9432
 gallery: []
 path: ""
 defaultUsername: ""
 defaultPassword: ""
 submitter: Pebble Proxy Community
-submission: https://github.com/jlmrt/PebbleProxy
+submission: https://github.com/jlmrt/umbrel-community-app-store
 releaseNotes: >-
   Adds a GrokBot forwarder under AI backends. Select a recording connection to send
   transcripts to a routine as JSON, with delivery history and support for local transcription
