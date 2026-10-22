@@ -6,6 +6,27 @@ DATA_DIR="${APP_DIR}/data"
 RECORDINGS_DIR="${DATA_DIR}/recordings"
 TMP_DIR="${DATA_DIR}/tmp"
 
-mkdir -p "${DATA_DIR}" "${RECORDINGS_DIR}" "${TMP_DIR}"
-chown 1000:1000 "${DATA_DIR}" "${RECORDINGS_DIR}" "${TMP_DIR}"
-chmod 700 "${DATA_DIR}" "${RECORDINGS_DIR}" "${TMP_DIR}"
+umask 077
+
+if [ -L "${DATA_DIR}" ] || { [ -e "${DATA_DIR}" ] && [ ! -d "${DATA_DIR}" ]; }; then
+  printf 'Refusing unsafe app data directory: %s\n' "${DATA_DIR}" >&2
+  exit 1
+fi
+mkdir -p "${DATA_DIR}"
+
+# The bind-mounted root cannot be replaced from inside the app container.
+# Lock it before inspecting children so the app cannot swap them for symlinks
+# while this hook applies host ownership and permissions.
+chown -h 0:0 "${DATA_DIR}"
+chmod 700 "${DATA_DIR}"
+
+for directory in "${RECORDINGS_DIR}" "${TMP_DIR}"; do
+  if [ -L "${directory}" ] || { [ -e "${directory}" ] && [ ! -d "${directory}" ]; }; then
+    printf 'Refusing unsafe app data directory: %s\n' "${directory}" >&2
+    exit 1
+  fi
+done
+
+mkdir -p "${RECORDINGS_DIR}" "${TMP_DIR}"
+chmod 700 "${RECORDINGS_DIR}" "${TMP_DIR}"
+chown -h 1000:1000 "${RECORDINGS_DIR}" "${TMP_DIR}" "${DATA_DIR}"
